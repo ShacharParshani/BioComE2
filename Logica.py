@@ -1,3 +1,4 @@
+import copy
 import random
 
 import Generation
@@ -35,12 +36,11 @@ def crossover(p1, p2):
 
 def mutation(p):  # switch two letters
     random_2_indexes = random.sample(range(NUM_LETTERS), 2)
-    mut_p = p.replication()
+    mut_p = self.replication(p)
     mut_p.permutation[random_2_indexes[0]] = p.permutation[random_2_indexes[1]]
     mut_p.permutation[random_2_indexes[1]] = p.permutation[random_2_indexes[1]]
     return mut_p
-
-
+  
 class Logica:
     def __init__(self, pCrossover, pMut, k, n):
         self.numCrossover = math.ceil(pCrossover * n)  # number of crossover
@@ -59,8 +59,9 @@ class Logica:
         self.current_gen.order_by_fitness()
         new_gen = Generation(self.n)
         # replication
-        for i in range(self.numRep):
-            new_gen.generation.appand(self.current_gen.generation[i].replication())
+        for i in range(self.num
+                      ):
+            new_gen.generation.appand(self.replication(current_gen.generation[i]))
         # cross over
         options = self.current_gen.generation
         fitnesses = [p.fitness for p in self.current_gen.generation]
@@ -77,3 +78,17 @@ class Logica:
             p = new_gen.generation[random_indexes[i]]
             new_gen.generation[random_indexes[i]] = mutation(p)
         return new_gen
+
+      def replication(self, p):
+        newInstance = copy.copy(p)
+        print("old: p.fitness = ", p.fitness, "newInstance.fitness = ", newInstance.fitness)
+        p.fitness = 100
+        print("new: p.fitness = ", p.fitness, "newInstance.fitness = ", newInstance.fitness)
+
+        return newInstance
+
+# if __name__ == '__main__':
+#     p = Permutation.Permutation()
+#     p.upgrade_fitness()
+#     l = Logica(95, 5, 20)
+#     l.replication(p)
