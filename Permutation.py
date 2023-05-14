@@ -5,6 +5,7 @@ class Permutation:
         self.permutation = self.random_order()
         self.decoded_text = None
         self.fitness = None
+        self.upgrade_fitness()
 
     def random_order(self): #random array of the 26 letters
         # Define the list of letters to shuffle

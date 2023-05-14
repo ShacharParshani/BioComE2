@@ -59,9 +59,8 @@ class Logica:
         self.current_gen.order_by_fitness()
         new_gen = Generation(self.n)
         # replication
-        for i in range(self.num
-                      ):
-            new_gen.generation.appand(self.replication(current_gen.generation[i]))
+        for i in range(self.num):
+            new_gen.generation.appand(self.replication(self.current_gen.generation[i]))
         # cross over
         options = self.current_gen.generation
         fitnesses = [p.fitness for p in self.current_gen.generation]
@@ -77,9 +76,13 @@ class Logica:
         for i in range(self.numMut):
             p = new_gen.generation[random_indexes[i]]
             new_gen.generation[random_indexes[i]] = mutation(p)
+
+        for i in range (self.n):
+            new_gen.generation[i].upgrade_fitness()
+
         return new_gen
 
-      def replication(self, p):
+    def replication(self, p):
         newInstance = copy.copy(p)
         print("old: p.fitness = ", p.fitness, "newInstance.fitness = ", newInstance.fitness)
         p.fitness = 100
