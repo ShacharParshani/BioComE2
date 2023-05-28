@@ -6,9 +6,8 @@ from Generation import Generation
 from Permutation import Permutation
 import math
 
-
-
 NUM_LETTERS = 26
+
 
 def check_double_letter(letters):
     letter_set = set()
@@ -18,6 +17,8 @@ def check_double_letter(letters):
             return
         letter_set.add(letter)
     print("No double letter found.")
+
+
 def crossover(p1, p2):
     random_cut = random.choice(range(1, NUM_LETTERS - 1))
     new_p = Permutation()
@@ -72,6 +73,7 @@ class Logica:
             file.write(f"{generation}\t{max_fitness}")
         with open('average_fitness.txt', 'a') as file:
             file.write(f"{generation}\t{average_fitness}")
+
     def save_solution(self, permutation):
         with open('perm.txt', 'w') as file:
             # right the decoding text to the file
@@ -87,11 +89,11 @@ class Logica:
         max = 0
         i = 0
         count_fitness_no_change = 0
-        while max < 0.99 and count_fitness_no_change <= 10:
+        while max < 0.8:
             i = 0
             count_fitness_no_change = 0
             last_fitness = 0
-            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.99 and count_fitness_no_change <= 10:
+            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.99 and count_fitness_no_change <= 5:
                 self.current_gen = self.new_generation()
                 print('generation: ', i)
                 max = 0
@@ -132,8 +134,6 @@ class Logica:
         print(f"finished after {Permutation.count_upgrade_fitness_calls} steps (calls to fitness function)")
         self.save_solution(maxp)
 
-
-
     def new_generation(self):
         self.current_gen.order_by_fitness()
         new_gen = Generation(self.n)
@@ -171,7 +171,6 @@ class Logica:
         mut_p.permutation[random_2_indexes[0]] = p.permutation[random_2_indexes[1]]
         mut_p.permutation[random_2_indexes[1]] = p.permutation[random_2_indexes[0]]
         return mut_p
-
 
 # if __name__ == '__main__':
 #     p = Permutation.Permutation()
