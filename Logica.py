@@ -87,11 +87,11 @@ class Logica:
         max = 0
         i = 0
         count_fitness_no_change = 0
-        while max < 0.99 and count_fitness_no_change <= 5:
+        while max < 0.99 and count_fitness_no_change <= 10:
             i = 0
             count_fitness_no_change = 0
             last_fitness = 0
-            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.99 and count_fitness_no_change <= 5:
+            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.99 and count_fitness_no_change <= 10:
                 self.current_gen = self.new_generation()
                 print('generation: ', i)
                 max = 0
