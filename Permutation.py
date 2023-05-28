@@ -1,15 +1,24 @@
 import random
 import math
 import numpy as np
-import pandas
 import pandas as pd
+from Freq import FREQ_ENGLISH_LETTERS
+from Freq import FREQ_ENCODE_TEXT
+
+
 class Permutation:
+    # Declare the static variables
+    count_upgrade_fitness_calls = 0  # static variable
     def __init__(self):
         self.permutation = self.random_order()
         self.decoded_text = None
         self.fitness = None
+        self.actual_freq = FREQ_ENGLISH_LETTERS
+        self.text_freq = FREQ_ENCODE_TEXT
         self.upgrade_fitness()
         self.RMSE = None
+        self.common_words = None
+
 
     def random_order(self): #random array of the 26 letters
         # Define the list of letters to shuffle
@@ -20,20 +29,18 @@ class Permutation:
         return letters
 
     def upgrade_fitness(self): #calculate and upgrade fitness
-        with open('Letter_Freq.txt', 'r') as f_freq:
-            freq = pd.read_csv(f_freq, sep='\t', header=None).iloc[:, 0]
-        self.decoded_text = self.decoding()
-        realWordsCounter = 0
-        splitedText = self.decoded_text.split()
-
-        # calculation
-        y_actual = freq
-        y_get = self.cal_freq()
-        MSE = np.square(np.subtract(y_actual, y_get)).mean()
+        Permutation.count_upgrade_fitness_calls += 1
+        #y_get = self.cal_freq()
+        y_get = [0] * 26
+        for i, letter in enumerate(self.permutation):
+            y_get[ord(letter) - 97] = self.text_freq[i]
+        MSE = np.square(np.subtract(self.actual_freq, y_get)).mean()
         RMSE = math.sqrt(MSE)
         self.RMSE = RMSE
-        new_fitness = self.cal_common_words();
-        self.fitness = new_fitness * 1000 + 100 - RMSE * 0.1
+        common_words = self.cal_common_words();
+        self.common_words = common_words
+        self.fitness = common_words * 1000 + 100 - RMSE * 0.1
+
     def cal_common_words(self):
         with open('dict.txt', 'r') as f:
             common_words_file = f.read()
@@ -78,16 +85,16 @@ class Permutation:
             if word not in common_words:
                 # print(word)
                 print(word)
-    def cal_freq(self):
-        freq = [];
-        letters = [chr(i) for i in range(97, 123)]
-        for letter in letters:
-            count = 0;
-            for char in self.decoded_text:
-                if char == letter:
-                    count += 1
-            freq.append(count)
-        return freq
+    # def cal_freq(self):
+    #     freq = [];
+    #     letters = [chr(i) for i in range(97, 123)]
+    #     for letter in letters:
+    #         count = 0;
+    #         for char in self.decoded_text:
+    #             if char == letter:
+    #                 count += 1
+    #         freq.append(count)
+    #     return freq
 
 
     def decoding(self):

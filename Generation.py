@@ -1,6 +1,6 @@
 from Permutation import Permutation
 class Generation:
-    def __init__(self, n):
+    def __init__(self, n, ):
         self.n = n  # n- size of population
         self.generation = []
 
