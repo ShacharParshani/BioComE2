@@ -86,15 +86,17 @@ class Logica:
         total_iteration = 0
         max = 0
         i = 0
-        while max < 0.9:
-            # for i in range(self.k):
+        count_fitness_no_change = 0
+        while max < 0.99 and count_fitness_no_change <= 5:
             i = 0
-            # print(i, max)
-            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.9:
+            count_fitness_no_change = 0
+            last_fitness = 0
+            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.99 and count_fitness_no_change <= 5:
                 self.current_gen = self.new_generation()
                 print('generation: ', i)
                 max = 0
                 sum = 0
+                max_fitness = 0
                 maxp = None
                 for p in self.current_gen.generation:
                     # print(p.permutation)
@@ -102,15 +104,25 @@ class Logica:
                     comm = p.common_words
                     # print("common w: ", comm)
                     # print("RMSE: ", p.RMSE)
-                    sum += comm
+                    fitness = p.fitness
+                    sum += fitness
                     if comm > max:
                         max = comm
                         maxp = p
+                    if fitness > max_fitness:
+                        max_fitness = fitness
+
                 print("max real words: ", max)
-                print("average real words: ", sum / self.n)
-                self.save_fitness(i, max, (sum / self.n))
+                print("max fitness: ", max_fitness)
+                print("average fitness: ", sum / self.n)
+                self.save_fitness(i, max_fitness, (sum / self.n))
                 i += 1
                 total_iteration += 1
+                if max_fitness == last_fitness:
+                    count_fitness_no_change
+                else:
+                    count_fitness_no_change = 0
+                last_fitness = max_fitness
             self.current_gen = Generation(self.n)
             self.current_gen.create_first_generation()
         maxp.print_not_in_dict()
