@@ -1,9 +1,12 @@
 import copy
 import random
+import pandas as pd
 
 from Generation import Generation
 from Permutation import Permutation
 import math
+
+
 
 NUM_LETTERS = 26
 
@@ -44,10 +47,10 @@ class Logica:
         self.numCrossover = math.ceil(pCrossover * n)  # number of crossover
         self.numRep = n - self.numCrossover  # number of replication
         self.numMut = math.ceil(pMut * n)  # number of mutation
-        self.current_gen = Generation(n)
-        self.current_gen.create_first_generation()
         self.k = k
         self.n = n  # n- size of population
+        self.current_gen = Generation(self.n)
+        self.current_gen.create_first_generation()
 
     # def run(self):
     #     for i in range(self.k):
@@ -78,30 +81,35 @@ class Logica:
         total_iteration = 0
         max = 0
         i = 0
-        while max < 0.85:
+        while max < 0.9:
             # for i in range(self.k):
             i = 0
-            self.current_gen.create_first_generation()
             # print(i, max)
-            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.85:
+            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.9:
                 self.current_gen = self.new_generation()
                 print('generation: ', i)
                 max = 0
+                sum = 0
                 maxp = None
                 for p in self.current_gen.generation:
-                    print(p.permutation)
-                    print("fitness: ", p.fitness)
-                    comm = p.cal_common_words()
-                    print("common w: ", comm)
-                    print("RMSE: ", p.RMSE)
+                    # print(p.permutation)
+                    # print("fitness: ", p.fitness)
+                    comm = p.common_words
+                    # print("common w: ", comm)
+                    # print("RMSE: ", p.RMSE)
+                    sum += comm
                     if comm > max:
                         max = comm
                         maxp = p
                 print("max comm w: ", max)
+                print("average comm w: ", sum / self.n)
                 i += 1
                 total_iteration += 1
+            self.current_gen = Generation(self.n)
+            self.current_gen.create_first_generation()
         maxp.print_not_in_dict()
         print(f"finished after {total_iteration} generation")
+        print(f"finished after {Permutation.count_upgrade_fitness_calls} steps (calls to fitness function)")
         self.save_solution(maxp)
 
 
@@ -143,6 +151,7 @@ class Logica:
         mut_p.permutation[random_2_indexes[0]] = p.permutation[random_2_indexes[1]]
         mut_p.permutation[random_2_indexes[1]] = p.permutation[random_2_indexes[0]]
         return mut_p
+
 
 # if __name__ == '__main__':
 #     p = Permutation.Permutation()

@@ -1,8 +1,16 @@
-from Logica import Logica
 
-# Press the green button in the gutter to run the script.
+FREQ_ENGLISH_LETTERS = None
+FREQ_ENCODE_TEXT = None
+
+from Logica import Logica
+import pandas as pd
+
+
+
+
+
 if __name__ == '__main__':
-    l = Logica(0.9, 0.2, 70, 100)
+    l = Logica(0.9, 0.2, 70, 500)
     l.run()
     maxf = 0
     maxp = None
@@ -11,6 +19,8 @@ if __name__ == '__main__':
             maxp = p
             maxf = p.fitness
     print(maxp.decoded_text)
+
+
 
     # import pandas as pd
     #
