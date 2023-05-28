@@ -2,8 +2,10 @@ import random
 import math
 import numpy as np
 import pandas as pd
-from Freq import FREQ_ENGLISH_LETTERS
-from Freq import FREQ_ENCODE_TEXT
+from global_processes import FREQ_ENGLISH_LETTERS
+from global_processes import FREQ_ENCODE_TEXT
+from global_processes import COMMON_WORD
+import re
 
 
 class Permutation:
@@ -42,11 +44,11 @@ class Permutation:
         self.fitness = common_words * 1000 + 100 - RMSE * 0.1
 
     def cal_common_words(self):
-        with open('dict.txt', 'r') as f:
-            common_words_file = f.read()
-        common_words = common_words_file.split()
-        #  with open('Letter_Freq.txt', 'r') as f_freq:
-        #      freq = pd.read_csv(f_freq, sep='\t')[0]
+        # with open('dict.txt', 'r') as f:
+        #     common_words_file = f.read()
+        # clean_dict = re.sub(r"[^a-zA-Z\s]", "", common_words_file)
+        # print ("dic: ", clean_dict)
+        common_words = COMMON_WORD
 
         self.decoded_text = self.decoding()
         realWordsCounter = 0
@@ -54,8 +56,9 @@ class Permutation:
         splitedText = self.decoded_text.split()
 
         for word in splitedText:
-            if word in common_words:
-                # print(word)
+            clean_word = re.sub(r"[^a-zA-Z\s]", "", word)
+
+            if clean_word in common_words:
                 realWordsCounter += 1
 
         # calculation
