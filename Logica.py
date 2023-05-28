@@ -67,6 +67,11 @@ class Logica:
     #             check_double_letter(p.permutation)
     #         print("max comm w: ", max)
 
+    def save_fitness(self, generation, max_fitness, average_fitness):
+        with open('max_fitness.txt', 'a') as file:
+            file.write(f"{generation}\t{max_fitness}")
+        with open('average_fitness.txt', 'a') as file:
+            file.write(f"{generation}\t{average_fitness}")
     def save_solution(self, permutation):
         with open('perm.txt', 'w') as file:
             # right the decoding text to the file
@@ -101,13 +106,15 @@ class Logica:
                     if comm > max:
                         max = comm
                         maxp = p
-                print("max comm w: ", max)
-                print("average comm w: ", sum / self.n)
+                print("max real words: ", max)
+                print("average real words: ", sum / self.n)
+                self.save_fitness(i, max, (sum / self.n))
                 i += 1
                 total_iteration += 1
             self.current_gen = Generation(self.n)
             self.current_gen.create_first_generation()
         maxp.print_not_in_dict()
+        print("max real words: ", max)
         print(f"finished after {total_iteration} generation")
         print(f"finished after {Permutation.count_upgrade_fitness_calls} steps (calls to fitness function)")
         self.save_solution(maxp)
