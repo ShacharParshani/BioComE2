@@ -87,9 +87,10 @@ class Logica:
     def run(self):
         total_iteration = 0
         max = 0
-        i = 0
+        count_start_over = 0
         count_fitness_no_change = 0
-        while max < 0.8:
+        while max < 0.8 and count_start_over <= 10:
+            count_start_over += 1
             i = 0
             count_fitness_no_change = 0
             last_fitness = 0
