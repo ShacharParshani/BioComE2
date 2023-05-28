@@ -7,7 +7,14 @@ import math
 
 NUM_LETTERS = 26
 
-
+def check_double_letter(letters):
+    letter_set = set()
+    for letter in letters:
+        if letter in letter_set:
+            print("double letter!!!!!!!!!!!!!!!!!!")
+            return
+        letter_set.add(letter)
+    print("No double letter found.")
 def crossover(p1, p2):
     random_cut = random.choice(range(1, NUM_LETTERS - 1))
     new_p = Permutation()
@@ -42,19 +49,62 @@ class Logica:
         self.k = k
         self.n = n  # n- size of population
 
+    # def run(self):
+    #     for i in range(self.k):
+    #         self.current_gen = self.new_generation()
+    #         print('generation: ', i)
+    #         max = 0
+    #         for p in self.current_gen.generation:
+    #             print(p.permutation)
+    #             print("fitness: ", p.fitness)
+    #             comm =  p.cal_common_words()
+    #             print("common w: ", comm)
+    #             print("RMSE: ", p.RMSE)
+    #             if comm > max : max = comm
+    #             check_double_letter(p.permutation)
+    #         print("max comm w: ", max)
+
+    def save_solution(self, permutation):
+        with open('perm.txt', 'w') as file:
+            # right the decoding text to the file
+            file.write(permutation.decoded_text)
+
+        with open('plain.txt', 'w') as file:
+            # Iterate over the dictionary items and write them to the file
+            for i, value in enumerate(permutation.permutation):
+                file.write(f"{chr(i + 97)} {value}\n")
+
     def run(self):
-        for i in range(self.k):
-            self.current_gen = self.new_generation()
-            print('generation: ', i)
-            max = 0
-            for p in self.current_gen.generation:
-                print(p.permutation)
-                print("fitness: ", p.fitness)
-                comm =  p.cal_common_words()
-                print("common w: ", comm)
-                print("RMSE: ", p.RMSE)
-                if comm > max : max = comm
-            print("max comm w: ", max)
+        total_iteration = 0
+        max = 0
+        i = 0
+        while max < 0.85:
+            # for i in range(self.k):
+            i = 0
+            self.current_gen.create_first_generation()
+            # print(i, max)
+            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.85:
+                self.current_gen = self.new_generation()
+                print('generation: ', i)
+                max = 0
+                maxp = None
+                for p in self.current_gen.generation:
+                    print(p.permutation)
+                    print("fitness: ", p.fitness)
+                    comm = p.cal_common_words()
+                    print("common w: ", comm)
+                    print("RMSE: ", p.RMSE)
+                    if comm > max:
+                        max = comm
+                        maxp = p
+                print("max comm w: ", max)
+                i += 1
+                total_iteration += 1
+        maxp.print_not_in_dict()
+        print(f"finished after {total_iteration} generation")
+        self.save_solution(maxp)
+
+
 
     def new_generation(self):
         self.current_gen.order_by_fitness()
@@ -84,7 +134,7 @@ class Logica:
         return new_gen
 
     def replication(self, p):
-        newInstance = copy.copy(p)
+        newInstance = copy.deepcopy(p)
         return newInstance
 
     def mutation(self, p):  # switch two letters
