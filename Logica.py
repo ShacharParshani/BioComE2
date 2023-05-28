@@ -119,7 +119,7 @@ class Logica:
                 i += 1
                 total_iteration += 1
                 if max_fitness == last_fitness:
-                    count_fitness_no_change
+                    count_fitness_no_change += 1
                 else:
                     count_fitness_no_change = 0
                 last_fitness = max_fitness
