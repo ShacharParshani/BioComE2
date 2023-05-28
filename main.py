@@ -12,13 +12,6 @@ import pandas as pd
 if __name__ == '__main__':
     l = Logica(0.9, 0.2, 70, 500)
     l.run()
-    maxf = 0
-    maxp = None
-    for p in l.current_gen.generation:
-        if p.fitness > maxf:
-            maxp = p
-            maxf = p.fitness
-    print(maxp.decoded_text)
 
 
 

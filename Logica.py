@@ -115,6 +115,7 @@ class Logica:
             self.current_gen.create_first_generation()
         maxp.print_not_in_dict()
         print("max real words: ", max)
+        print("average real words: ", sum / self.n)
         print(f"finished after {total_iteration} generation")
         print(f"finished after {Permutation.count_upgrade_fitness_calls} steps (calls to fitness function)")
         self.save_solution(maxp)
