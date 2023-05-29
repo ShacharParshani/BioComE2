@@ -9,7 +9,6 @@ def read_dict():
     with open('dict.txt', 'r') as f:
         common_words_file = f.read()
     clean_dict = re.sub(r"[^a-zA-Z\s]", "", common_words_file)
-    print("dic: ", clean_dict)
 
     dict_in_list = clean_dict.splitlines()
     return dict_in_list

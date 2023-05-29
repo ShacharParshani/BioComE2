@@ -48,25 +48,10 @@ class Logica:
         self.numCrossover = math.ceil(pCrossover * n)  # number of crossover
         self.numRep = n - self.numCrossover  # number of replication
         self.numMut = math.ceil(pMut * n)  # number of mutation
-        self.k = k
         self.n = n  # n- size of population
         self.current_gen = Generation(self.n)
         self.current_gen.create_first_generation()
 
-    # def run(self):
-    #     for i in range(self.k):
-    #         self.current_gen = self.new_generation()
-    #         print('generation: ', i)
-    #         max = 0
-    #         for p in self.current_gen.generation:
-    #             print(p.permutation)
-    #             print("fitness: ", p.fitness)
-    #             comm =  p.cal_common_words()
-    #             print("common w: ", comm)
-    #             print("RMSE: ", p.RMSE)
-    #             if comm > max : max = comm
-    #             check_double_letter(p.permutation)
-    #         print("max comm w: ", max)
 
     def save_fitness(self, generation, max_fitness, average_fitness):
         with open('max_fitness.txt', 'a') as file:
@@ -84,6 +69,7 @@ class Logica:
             for i, value in enumerate(permutation.permutation):
                 file.write(f"{chr(i + 97)} {value}\n")
 
+
     def run(self):
         total_iteration = 0
         max = 0
@@ -96,7 +82,7 @@ class Logica:
             last_fitness = 0
             while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 1 and count_fitness_no_change <= 5:
                 self.current_gen = self.new_generation()
-                print('generation: ', i)
+                print(f"generation: {i}")
                 max = 0
                 sum = 0
                 max_fitness = 0
@@ -115,9 +101,9 @@ class Logica:
                     if fitness > max_fitness:
                         max_fitness = fitness
 
-                print("max real words: ", max)
-                print("max fitness: ", max_fitness)
-                print("average fitness: ", sum / self.n)
+                print(f"max real words: {max}")
+                print(f"max fitness: {max_fitness}")
+                print(f"average fitness: {sum / self.n}")
                 self.save_fitness(i, max_fitness, (sum / self.n))
                 i += 1
                 total_iteration += 1
@@ -128,9 +114,7 @@ class Logica:
                 last_fitness = max_fitness
             self.current_gen = Generation(self.n)
             self.current_gen.create_first_generation()
-        maxp.print_not_in_dict()
-        print("max real words: ", max)
-        print("average real words: ", sum / self.n)
+        print(f"max real words: {max}")
         print(f"finished after {total_iteration} generation")
         print(f"finished after {Permutation.count_upgrade_fitness_calls} steps (calls to fitness function)")
         self.save_solution(maxp)
@@ -173,8 +157,4 @@ class Logica:
         mut_p.permutation[random_2_indexes[1]] = p.permutation[random_2_indexes[0]]
         return mut_p
 
-# if __name__ == '__main__':
-#     p = Permutation.Permutation()
-#     p.upgrade_fitness()
-#     l = Logica(95, 5, 20)
-#     l.replication(p)
+
