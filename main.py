@@ -5,7 +5,7 @@ FREQ_ENCODE_TEXT = None
 from Logica import Logica
 
 if __name__ == '__main__':
-    l = Logica(0.9, 0.2, 70, 50)
+    l = Logica(0.9, 0.2, 70, 500)
     l.run()
 
     # with open('Letter_Freq.txt', 'r') as f_freq:

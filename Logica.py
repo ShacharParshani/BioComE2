@@ -70,9 +70,9 @@ class Logica:
 
     def save_fitness(self, generation, max_fitness, average_fitness):
         with open('max_fitness.txt', 'a') as file:
-            file.write(f"{generation}\t{max_fitness}")
+            file.write(f"{generation}\t{max_fitness}\n")
         with open('average_fitness.txt', 'a') as file:
-            file.write(f"{generation}\t{average_fitness}")
+            file.write(f"{generation}\t{average_fitness}\n")
 
     def save_solution(self, permutation):
         with open('perm.txt', 'w') as file:
@@ -94,7 +94,7 @@ class Logica:
             i = 0
             count_fitness_no_change = 0
             last_fitness = 0
-            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 0.99 and count_fitness_no_change <= 5:
+            while (i < 80 or max > 0.3) and (i < 120 or max > 0.5) and max < 1 and count_fitness_no_change <= 5:
                 self.current_gen = self.new_generation()
                 print('generation: ', i)
                 max = 0

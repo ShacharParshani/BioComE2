@@ -17,7 +17,6 @@ class Permutation:
         self.fitness = None
         self.actual_freq = FREQ_ENGLISH_LETTERS
         self.text_freq = FREQ_ENCODE_TEXT
-        self.upgrade_fitness()
         self.RMSE = None
         self.common_words = None
 

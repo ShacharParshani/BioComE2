@@ -7,6 +7,7 @@ class Generation:
     def create_first_generation(self):
         for i in range(self.n):
             p = Permutation()
+            p.upgrade_fitness()
             self.generation.append(p)
 
     def order_by_fitness(self): # high to low
